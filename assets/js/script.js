@@ -32,36 +32,43 @@ var answer1 = document.querySelector("#answerid1")
 var answer2 = document.querySelector("#answerid2")
 var answer3 = document.querySelector("#answerid3")
 var answer4 = document.querySelector("#answerid4")
+var highscoring = document.querySelector("#highscores")
+var scoreSubmit = document.querySelector("#submit")
+var highscoreArray = []
+var startButton = document.querySelector("#startButton")
+var backButton = document.querySelector("#backBtn")
+var highscoreList = document.querySelector("#highscoreList")
 
-
-  var startButton = document.querySelector("#startButton")
-
-  startButton.addEventListener("click", function () {
+startButton.addEventListener("click", function () {
+    clockTime = setInterval(timer, 1000)
     questionsDiv.classList.remove("hide")
     introClass.classList.add("hide")
+    highscoring.classList.add("hide")
     loadQuestion()
-    clockTime = setInterval(timer, 1000)     
   })
 
   function loadQuestion(){
-        
-    questionHead.textContent=questions[questionIndex].question
-    answer1.textContent=questions[questionIndex].answers[0]
-    answer2.textContent=questions[questionIndex].answers[1]
-    answer3.textContent=questions[questionIndex].answers[2]
-    answer4.textContent=questions[questionIndex].answers[3]  
-}
+    
+    if (questionIndex < questions.length) {
+      questionHead.textContent=questions[questionIndex].question
+      answer1.textContent=questions[questionIndex].answers[0]
+      answer2.textContent=questions[questionIndex].answers[1]
+      answer3.textContent=questions[questionIndex].answers[2]
+      answer4.textContent=questions[questionIndex].answers[3]
+    } else { 
+      clearTimeout(clockTime)
+      addInitials();
+    }
+  }
+
 
 function checkAnswer(answerValue) {
 
   if (answerValue === questions[questionIndex].correct) {
-    console.log("correct")
     questionIndex++;
     loadQuestion();
-
   }
   else {
-    console.log("incorrect")
     timeRemaining = timeRemaining - 10;
   }
 }
@@ -80,13 +87,38 @@ function checkAnswer(answerValue) {
     })
   
   function timer(){
-    if(timeRemaining===0)
+    if(timeRemaining === 0)
     {
-      clearInterval(clockTime)  
       introClass.classList.add("hide")  //adding the hide class to make it invisible
       questionsDiv.classList.remove("hide") // removing the hide class to make it visible
+      clearInterval(clockTime)  
+
 
     }
-    timeLeft.textContent ="Time Remaining: " + timeRemaining
+    timeLeft.innerHTML =  ("Time Remaining: " + timeRemaining)
     timeRemaining--
+  }
+  function addInitials() {
+    var initializer = document.getElementById("initials").value;
+    scoreSubmit.addEventListener("click", function(){
+      console.log(initializer)
+    })
+    highscoreArray.push(initializer)
+    highScores(timeRemaining)
+  }
+  function highScores(score) {
+    highscoreArray.push(score)
+    questionsDiv.classList.add("hide")
+    highscoring.classList.remove("hide")
+    scoreSubmit.addEventListener("click", function(){
+      for (let i = 0; i < highscoreArray.length; i++) {
+        var li = document.createElement('li')
+        li.appendChild(document.createTextNode(highscoreArray[i]))
+        highscoreList.appendChild(li)
+     }
+    })
+    backButton.addEventListener("click",function() {
+      introClass.classList.remove("hide")
+      highscoring.classList.add("hide")
+    })
   }
