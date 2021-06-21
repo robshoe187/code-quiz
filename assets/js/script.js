@@ -96,7 +96,7 @@ function checkAnswer(answerValue) {
     if(timeRemaining === 0)
     {
       questionsDiv.classList.add("hide")
-      introClass.classList.remove("hide") 
+      highscores.classList.remove("hide") 
       clearInterval(clockTime)
     }
     timeLeft.innerHTML =  ("Time Remaining: " + timeRemaining)
