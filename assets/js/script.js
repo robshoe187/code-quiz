@@ -109,7 +109,6 @@ function checkAnswer(answerValue) {
     highscoring.classList.remove("hide")
     
     scoreSubmit.addEventListener("click", function(){
-      var initializer = document.getElementById("initials").value;
       highscoreArray.push(score)
       for (let i = 0; i < highscoreArray.length; i++) {
         var li = document.createElement('li')
