@@ -1,3 +1,4 @@
+//declaring variables
 var questions = [
     {
         question: "What can Javascript arrays store?", 
@@ -35,18 +36,21 @@ var answer4 = document.querySelector("#answerid4")
 var highscoring = document.querySelector("#highscores")
 var scoreSubmit = document.querySelector("#submit")
 var highscoreArray = []
+var highscoreIndex = 0
+
 var startButton = document.querySelector("#startButton")
 var backButton = document.querySelector("#backBtn")
-var highscoreList = document.querySelector("#highscoreList")
 
+//start the quiz function
 startButton.addEventListener("click", function () {
-    clockTime = setInterval(timer, 1000)
-    questionsDiv.classList.remove("hide")
-    introClass.classList.add("hide")
-    highscoring.classList.add("hide")
-    loadQuestion()
+  clockTime = setInterval(timer, 1000)
+  questionsDiv.classList.remove("hide")
+  introClass.classList.add("hide")
+  highscoring.classList.add("hide")
+  loadQuestion()
   })
 
+//function to progress through questions
   function loadQuestion(){
     
     if (questionIndex < questions.length) {
@@ -57,11 +61,11 @@ startButton.addEventListener("click", function () {
       answer4.textContent=questions[questionIndex].answers[3]
     } else { 
       clearTimeout(clockTime)
-      addInitials();
+      highScores(timeRemaining)
     }
   }
 
-
+//if the answer is incorrect deduct 10 seconds
 function checkAnswer(answerValue) {
 
   if (answerValue === questions[questionIndex].correct) {
@@ -73,6 +77,7 @@ function checkAnswer(answerValue) {
   }
 }
 
+//Button event listener for questions
   answer1.addEventListener("click", function(){
       checkAnswer(1)
     })
@@ -86,39 +91,41 @@ function checkAnswer(answerValue) {
       checkAnswer(4);
     })
   
+    //timer and hiding welcome screen function
   function timer(){
     if(timeRemaining === 0)
     {
-      introClass.classList.add("hide")  //adding the hide class to make it invisible
-      questionsDiv.classList.remove("hide") // removing the hide class to make it visible
-      clearInterval(clockTime)  
-
-
+      questionsDiv.classList.add("hide")
+      introClass.classList.remove("hide") 
+      clearInterval(clockTime)
     }
     timeLeft.innerHTML =  ("Time Remaining: " + timeRemaining)
     timeRemaining--
   }
-  function addInitials() {
-    var initializer = document.getElementById("initials").value;
-    scoreSubmit.addEventListener("click", function(){
-      console.log(initializer)
-    })
-    highscoreArray.push(initializer)
-    highScores(timeRemaining)
-  }
+  //adding the score to the high score array
   function highScores(score) {
-    highscoreArray.push(score)
     questionsDiv.classList.add("hide")
     highscoring.classList.remove("hide")
+    
     scoreSubmit.addEventListener("click", function(){
+      var initializer = document.getElementById("initials").value;
+      console.log(initializer)
+      highscoreArray.push(initializer)
+      highscoreArray.push(score)
       for (let i = 0; i < highscoreArray.length; i++) {
         var li = document.createElement('li')
-        li.appendChild(document.createTextNode(highscoreArray[i]))
-        highscoreList.appendChild(li)
-     }
-    })
+        var textNode = document.createTextNode(highscoreArray[i])
+        li.appendChild(textNode)
+        document.getElementById("highscoreList").appendChild(li)
+    }
+  })
+
+  //button to exit the high score screen
     backButton.addEventListener("click",function() {
+      questionIndex = 0
+      timeRemaining = (questions.length * 15)
       introClass.classList.remove("hide")
       highscoring.classList.add("hide")
+      timeRemaining = (questions.length * 15)
     })
-  }
+    }
