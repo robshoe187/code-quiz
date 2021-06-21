@@ -98,6 +98,7 @@ function checkAnswer(answerValue) {
       questionsDiv.classList.add("hide")
       highscores.classList.remove("hide") 
       clearInterval(clockTime)
+      scoreSubmit(timeRemaining)
     }
     timeLeft.innerHTML =  ("Time Remaining: " + timeRemaining)
     timeRemaining--
@@ -109,8 +110,6 @@ function checkAnswer(answerValue) {
     
     scoreSubmit.addEventListener("click", function(){
       var initializer = document.getElementById("initials").value;
-      console.log(initializer)
-      highscoreArray.push(initializer)
       highscoreArray.push(score)
       for (let i = 0; i < highscoreArray.length; i++) {
         var li = document.createElement('li')
